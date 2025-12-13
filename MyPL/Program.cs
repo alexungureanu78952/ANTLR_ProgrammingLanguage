@@ -1,7 +1,8 @@
 using System;
 using System.IO;
+using System.Reflection;
 using MyPL.Reporting;
-using MyPL.Core; // Added using
+using MyPL.Core;
 
 namespace MyPL
 {
@@ -15,7 +16,15 @@ namespace MyPL
                 return;
             }
 
-            string inputFile = args.Length > 0 ? args[0] : "input.txt";
+            // Reliable Project Root Calculation
+            string assemblyPath = Assembly.GetExecutingAssembly().Location;
+            string binDir = Path.GetDirectoryName(assemblyPath);
+            // Up 3 levels from bin/Debug/net9.0
+            string projectRoot = Path.GetFullPath(Path.Combine(binDir, "..", "..", ".."));
+            
+            string inputFile = args.Length > 0 ? args[0] : Path.Combine(projectRoot, "input.txt");
+            string outputDir = Path.Combine(projectRoot, "Output");
+
             EnsureInputExists(inputFile);
 
             Console.WriteLine($"[Main] Reading {inputFile}...");
@@ -26,7 +35,7 @@ namespace MyPL
             var result = compiler.Compile(sourceCode);
 
             // Reporting
-            var reporter = new ReportGenerator("Output");
+            var reporter = new ReportGenerator(outputDir);
             reporter.GenerateAll(result);
 
             if (result.IsSuccess)

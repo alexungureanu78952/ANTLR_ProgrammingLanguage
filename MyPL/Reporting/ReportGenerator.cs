@@ -44,10 +44,14 @@ namespace MyPL.Reporting
             using var writer = new StreamWriter(Path.Combine(_outputDir, "functions.txt"));
             foreach (var f in functions)
             {
+                string recursionType = f.IsRecursive ? "recursiva" : "iterativa";
+                string mainType = f.IsMain ? "main" : "non-main";
+
                 writer.WriteLine($"Function: {f.Name}");
-                writer.WriteLine($"  Meta: Type={(f.IsMain ? "Main" : "Func")}, Return={f.ReturnType}, Recursive={f.IsRecursive}");
+                writer.WriteLine($"  Type: {mainType}, {recursionType}");
+                writer.WriteLine($"  Return Type: {f.ReturnType}");
                 
-                writer.Write("  Params: ");
+                writer.Write("  Parameters: ");
                 if (f.Parameters.Count == 0) writer.WriteLine("None");
                 else
                 {
@@ -55,7 +59,7 @@ namespace MyPL.Reporting
                     foreach (var p in f.Parameters) writer.WriteLine($"    {p.Type} {p.Name}");
                 }
 
-                writer.Write("  Locals: ");
+                writer.Write("  Local Variables: ");
                 if (f.Locals.Count == 0) writer.WriteLine("None");
                 else
                 {

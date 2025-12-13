@@ -1,0 +1,8 @@
+
+int globalX = 10;
+void main() {
+    int localY = 5;
+    if (localY > 0) {
+        localY = localY - 1;
+    }
+}
