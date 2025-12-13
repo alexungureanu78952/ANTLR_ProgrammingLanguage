@@ -7,4 +7,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Include="MyPL.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>MyPL</CustomToolNamespace>
+    </Antlr4>
+  </ItemGroup>
 </Project>
