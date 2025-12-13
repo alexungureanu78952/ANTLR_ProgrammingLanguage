@@ -38,15 +38,208 @@ public interface IMyPLVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitProgram([NotNull] MyPLParser.ProgramContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.globalDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGlobalDeclaration([NotNull] MyPLParser.GlobalDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.variableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableDeclaration([NotNull] MyPLParser.VariableDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.functionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionDeclaration([NotNull] MyPLParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameterList([NotNull] MyPLParser.ParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.parameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameter([NotNull] MyPLParser.ParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlock([NotNull] MyPLParser.BlockContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MyPLParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] MyPLParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="MyPLParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="MyPLParser.assignmentStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression([NotNull] MyPLParser.ExpressionContext context);
+	Result VisitAssignmentStatement([NotNull] MyPLParser.AssignmentStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.assignmentOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignmentOperator([NotNull] MyPLParser.AssignmentOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.ifStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStatement([NotNull] MyPLParser.IfStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.forStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStatement([NotNull] MyPLParser.ForStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.forInit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForInit([NotNull] MyPLParser.ForInitContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.forUpdate"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForUpdate([NotNull] MyPLParser.ForUpdateContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.whileStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileStatement([NotNull] MyPLParser.WhileStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.returnStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnStatement([NotNull] MyPLParser.ReturnStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.expressionStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionStatement([NotNull] MyPLParser.ExpressionStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>MultDivModExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultDivModExpr([NotNull] MyPLParser.MultDivModExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>RelationalExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRelationalExpr([NotNull] MyPLParser.RelationalExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>UnaryExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryExpr([NotNull] MyPLParser.UnaryExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>LogicalAndExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalAndExpr([NotNull] MyPLParser.LogicalAndExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>PrefixExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrefixExpr([NotNull] MyPLParser.PrefixExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>PostfixExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPostfixExpr([NotNull] MyPLParser.PostfixExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>LogicalOrExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalOrExpr([NotNull] MyPLParser.LogicalOrExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>FunctionCallExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCallExpr([NotNull] MyPLParser.FunctionCallExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>EqualityExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqualityExpr([NotNull] MyPLParser.EqualityExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>IdentifierExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdentifierExpr([NotNull] MyPLParser.IdentifierExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>LiteralExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteralExpr([NotNull] MyPLParser.LiteralExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParenExpr([NotNull] MyPLParser.ParenExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AddSubExpr</c>
+	/// labeled alternative in <see cref="MyPLParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAddSubExpr([NotNull] MyPLParser.AddSubExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.argumentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArgumentList([NotNull] MyPLParser.ArgumentListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteral([NotNull] MyPLParser.LiteralContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MyPLParser.type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitType([NotNull] MyPLParser.TypeContext context);
 }
