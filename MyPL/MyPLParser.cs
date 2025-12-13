@@ -36,13 +36,13 @@ public partial class MyPLParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		T__24=25, T__25=26, T__26=27, T__27=28, CONST=29, INT=30, FLOAT=31, DOUBLE=32, 
-		STRING=33, VOID=34, IF=35, ELSE=36, FOR=37, WHILE=38, RETURN=39, INT_LITERAL=40, 
-		FLOAT_LITERAL=41, STRING_LITERAL=42, ID=43, LINE_COMMENT=44, BLOCK_COMMENT=45, 
-		WS=46;
+		CONST=1, INT=2, FLOAT=3, DOUBLE=4, STRING=5, VOID=6, IF=7, ELSE=8, FOR=9, 
+		WHILE=10, RETURN=11, ASSIGN=12, PLUS_ASSIGN=13, MINUS_ASSIGN=14, MULT_ASSIGN=15, 
+		DIV_ASSIGN=16, MOD_ASSIGN=17, PLUS=18, MINUS=19, MULT=20, DIV=21, MOD=22, 
+		INCREMENT=23, DECREMENT=24, LT=25, GT=26, LE=27, GE=28, EQ=29, NE=30, 
+		AND=31, OR=32, NOT=33, LPAREN=34, RPAREN=35, LBRACE=36, RBRACE=37, SEMICOLON=38, 
+		COMMA=39, INT_LITERAL=40, FLOAT_LITERAL=41, STRING_LITERAL=42, ID=43, 
+		LINE_COMMENT=44, BLOCK_COMMENT=45, WS=46;
 	public const int
 		RULE_program = 0, RULE_globalDeclaration = 1, RULE_variableDeclaration = 2, 
 		RULE_functionDeclaration = 3, RULE_parameterList = 4, RULE_parameter = 5, 
@@ -59,17 +59,18 @@ public partial class MyPLParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'='", "';'", "','", "'('", "')'", "'{'", "'}'", "'+='", "'-='", 
-		"'*='", "'/='", "'%='", "'++'", "'--'", "'!'", "'-'", "'+'", "'*'", "'/'", 
-		"'%'", "'<'", "'>'", "'<='", "'>='", "'=='", "'!='", "'&&'", "'||'", "'const'", 
-		"'int'", "'float'", "'double'", "'string'", "'void'", "'if'", "'else'", 
-		"'for'", "'while'", "'return'"
+		null, "'const'", "'int'", "'float'", "'double'", "'string'", "'void'", 
+		"'if'", "'else'", "'for'", "'while'", "'return'", "'='", "'+='", "'-='", 
+		"'*='", "'/='", "'%='", "'+'", "'-'", "'*'", "'/'", "'%'", "'++'", "'--'", 
+		"'<'", "'>'", "'<='", "'>='", "'=='", "'!='", "'&&'", "'||'", "'!'", "'('", 
+		"')'", "'{'", "'}'", "';'", "','"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, "CONST", "INT", "FLOAT", "DOUBLE", "STRING", 
-		"VOID", "IF", "ELSE", "FOR", "WHILE", "RETURN", "INT_LITERAL", "FLOAT_LITERAL", 
+		null, "CONST", "INT", "FLOAT", "DOUBLE", "STRING", "VOID", "IF", "ELSE", 
+		"FOR", "WHILE", "RETURN", "ASSIGN", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
+		"DIV_ASSIGN", "MOD_ASSIGN", "PLUS", "MINUS", "MULT", "DIV", "MOD", "INCREMENT", 
+		"DECREMENT", "LT", "GT", "LE", "GE", "EQ", "NE", "AND", "OR", "NOT", "LPAREN", 
+		"RPAREN", "LBRACE", "RBRACE", "SEMICOLON", "COMMA", "INT_LITERAL", "FLOAT_LITERAL", 
 		"STRING_LITERAL", "ID", "LINE_COMMENT", "BLOCK_COMMENT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
@@ -142,7 +143,7 @@ public partial class MyPLParser : Parser {
 			State = 46;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 33822867456L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 126L) != 0)) {
 				{
 				State = 44;
 				ErrorHandler.Sync(this);
@@ -227,12 +228,21 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID(int i) {
 			return GetToken(MyPLParser.ID, i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(MyPLParser.SEMICOLON, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CONST() { return GetToken(MyPLParser.CONST, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] ASSIGN() { return GetTokens(MyPLParser.ASSIGN); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ASSIGN(int i) {
+			return GetToken(MyPLParser.ASSIGN, i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] COMMA() { return GetTokens(MyPLParser.COMMA); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COMMA(int i) {
+			return GetToken(MyPLParser.COMMA, i);
 		}
 		public VariableDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -276,17 +286,17 @@ public partial class MyPLParser : Parser {
 				State = 60;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if (_la==T__0) {
+				if (_la==ASSIGN) {
 					{
 					State = 58;
-					Match(T__0);
+					Match(ASSIGN);
 					State = 59;
 					expression(0);
 					}
 				}
 
 				State = 62;
-				Match(T__1);
+				Match(SEMICOLON);
 				}
 				break;
 			case 2:
@@ -307,21 +317,21 @@ public partial class MyPLParser : Parser {
 				State = 68;
 				Match(ID);
 				State = 69;
-				Match(T__0);
+				Match(ASSIGN);
 				State = 70;
 				expression(0);
 				State = 77;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				while (_la==T__2) {
+				while (_la==COMMA) {
 					{
 					{
 					State = 71;
-					Match(T__2);
+					Match(COMMA);
 					State = 72;
 					Match(ID);
 					State = 73;
-					Match(T__0);
+					Match(ASSIGN);
 					State = 74;
 					expression(0);
 					}
@@ -331,7 +341,7 @@ public partial class MyPLParser : Parser {
 					_la = TokenStream.LA(1);
 				}
 				State = 80;
-				Match(T__1);
+				Match(SEMICOLON);
 				}
 				break;
 			}
@@ -352,6 +362,8 @@ public partial class MyPLParser : Parser {
 			return GetRuleContext<TypeContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(MyPLParser.ID, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(MyPLParser.LPAREN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(MyPLParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public BlockContext block() {
 			return GetRuleContext<BlockContext>(0);
 		}
@@ -392,11 +404,11 @@ public partial class MyPLParser : Parser {
 				State = 85;
 				Match(ID);
 				State = 86;
-				Match(T__3);
+				Match(LPAREN);
 				State = 88;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16106127360L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 60L) != 0)) {
 					{
 					State = 87;
 					parameterList();
@@ -404,7 +416,7 @@ public partial class MyPLParser : Parser {
 				}
 
 				State = 90;
-				Match(T__4);
+				Match(RPAREN);
 				State = 91;
 				block();
 				}
@@ -417,11 +429,11 @@ public partial class MyPLParser : Parser {
 				State = 94;
 				Match(ID);
 				State = 95;
-				Match(T__3);
+				Match(LPAREN);
 				State = 97;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16106127360L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 60L) != 0)) {
 					{
 					State = 96;
 					parameterList();
@@ -429,7 +441,7 @@ public partial class MyPLParser : Parser {
 				}
 
 				State = 99;
-				Match(T__4);
+				Match(RPAREN);
 				State = 100;
 				block();
 				}
@@ -455,6 +467,10 @@ public partial class MyPLParser : Parser {
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ParameterContext parameter(int i) {
 			return GetRuleContext<ParameterContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] COMMA() { return GetTokens(MyPLParser.COMMA); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COMMA(int i) {
+			return GetToken(MyPLParser.COMMA, i);
 		}
 		public ParameterListContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -482,11 +498,11 @@ public partial class MyPLParser : Parser {
 			State = 108;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__2) {
+			while (_la==COMMA) {
 				{
 				{
 				State = 104;
-				Match(T__2);
+				Match(COMMA);
 				State = 105;
 				parameter();
 				}
@@ -551,6 +567,8 @@ public partial class MyPLParser : Parser {
 	}
 
 	public partial class BlockContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LBRACE() { return GetToken(MyPLParser.LBRACE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RBRACE() { return GetToken(MyPLParser.RBRACE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public StatementContext[] statement() {
 			return GetRuleContexts<StatementContext>();
 		}
@@ -579,11 +597,11 @@ public partial class MyPLParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 114;
-			Match(T__5);
+			Match(LBRACE);
 			State = 118;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 17505750081616L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16587189653182L) != 0)) {
 				{
 				{
 				State = 115;
@@ -595,7 +613,7 @@ public partial class MyPLParser : Parser {
 				_la = TokenStream.LA(1);
 			}
 			State = 121;
-			Match(T__6);
+			Match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -732,6 +750,7 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(MyPLParser.SEMICOLON, 0); }
 		public AssignmentStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -759,7 +778,7 @@ public partial class MyPLParser : Parser {
 			State = 135;
 			expression(0);
 			State = 136;
-			Match(T__1);
+			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -774,6 +793,12 @@ public partial class MyPLParser : Parser {
 	}
 
 	public partial class AssignmentOperatorContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ASSIGN() { return GetToken(MyPLParser.ASSIGN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS_ASSIGN() { return GetToken(MyPLParser.PLUS_ASSIGN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS_ASSIGN() { return GetToken(MyPLParser.MINUS_ASSIGN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULT_ASSIGN() { return GetToken(MyPLParser.MULT_ASSIGN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIV_ASSIGN() { return GetToken(MyPLParser.DIV_ASSIGN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MOD_ASSIGN() { return GetToken(MyPLParser.MOD_ASSIGN, 0); }
 		public AssignmentOperatorContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -797,7 +822,7 @@ public partial class MyPLParser : Parser {
 			{
 			State = 138;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 7938L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 258048L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -819,9 +844,11 @@ public partial class MyPLParser : Parser {
 
 	public partial class IfStatementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IF() { return GetToken(MyPLParser.IF, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(MyPLParser.LPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(MyPLParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public StatementContext[] statement() {
 			return GetRuleContexts<StatementContext>();
 		}
@@ -852,11 +879,11 @@ public partial class MyPLParser : Parser {
 			State = 140;
 			Match(IF);
 			State = 141;
-			Match(T__3);
+			Match(LPAREN);
 			State = 142;
 			expression(0);
 			State = 143;
-			Match(T__4);
+			Match(RPAREN);
 			State = 144;
 			statement();
 			State = 147;
@@ -886,6 +913,12 @@ public partial class MyPLParser : Parser {
 
 	public partial class ForStatementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FOR() { return GetToken(MyPLParser.FOR, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(MyPLParser.LPAREN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] SEMICOLON() { return GetTokens(MyPLParser.SEMICOLON); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON(int i) {
+			return GetToken(MyPLParser.SEMICOLON, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(MyPLParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement() {
 			return GetRuleContext<StatementContext>(0);
 		}
@@ -922,11 +955,11 @@ public partial class MyPLParser : Parser {
 			State = 149;
 			Match(FOR);
 			State = 150;
-			Match(T__3);
+			Match(LPAREN);
 			State = 152;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16509317668880L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16518470172734L) != 0)) {
 				{
 				State = 151;
 				forInit();
@@ -934,11 +967,11 @@ public partial class MyPLParser : Parser {
 			}
 
 			State = 154;
-			Match(T__1);
+			Match(SEMICOLON);
 			State = 156;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16492674670608L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16518470172672L) != 0)) {
 				{
 				State = 155;
 				expression(0);
@@ -946,11 +979,11 @@ public partial class MyPLParser : Parser {
 			}
 
 			State = 158;
-			Match(T__1);
+			Match(SEMICOLON);
 			State = 160;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16492674670608L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16518470172672L) != 0)) {
 				{
 				State = 159;
 				forUpdate();
@@ -958,7 +991,7 @@ public partial class MyPLParser : Parser {
 			}
 
 			State = 162;
-			Match(T__4);
+			Match(RPAREN);
 			State = 163;
 			statement();
 			}
@@ -1096,9 +1129,11 @@ public partial class MyPLParser : Parser {
 
 	public partial class WhileStatementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WHILE() { return GetToken(MyPLParser.WHILE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(MyPLParser.LPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(MyPLParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement() {
 			return GetRuleContext<StatementContext>(0);
 		}
@@ -1125,11 +1160,11 @@ public partial class MyPLParser : Parser {
 			State = 174;
 			Match(WHILE);
 			State = 175;
-			Match(T__3);
+			Match(LPAREN);
 			State = 176;
 			expression(0);
 			State = 177;
-			Match(T__4);
+			Match(RPAREN);
 			State = 178;
 			statement();
 			}
@@ -1147,6 +1182,7 @@ public partial class MyPLParser : Parser {
 
 	public partial class ReturnStatementContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RETURN() { return GetToken(MyPLParser.RETURN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(MyPLParser.SEMICOLON, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
@@ -1176,7 +1212,7 @@ public partial class MyPLParser : Parser {
 			State = 182;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16492674670608L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16518470172672L) != 0)) {
 				{
 				State = 181;
 				expression(0);
@@ -1184,7 +1220,7 @@ public partial class MyPLParser : Parser {
 			}
 
 			State = 184;
-			Match(T__1);
+			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1202,6 +1238,7 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(MyPLParser.SEMICOLON, 0); }
 		public ExpressionStatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1225,7 +1262,7 @@ public partial class MyPLParser : Parser {
 			State = 186;
 			expression(0);
 			State = 187;
-			Match(T__1);
+			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1258,6 +1295,9 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULT() { return GetToken(MyPLParser.MULT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIV() { return GetToken(MyPLParser.DIV, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MOD() { return GetToken(MyPLParser.MOD, 0); }
 		public MultDivModExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1273,6 +1313,10 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LT() { return GetToken(MyPLParser.LT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GT() { return GetToken(MyPLParser.GT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LE() { return GetToken(MyPLParser.LE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GE() { return GetToken(MyPLParser.GE, 0); }
 		public RelationalExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1285,6 +1329,9 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOT() { return GetToken(MyPLParser.NOT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(MyPLParser.MINUS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(MyPLParser.PLUS, 0); }
 		public UnaryExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1300,6 +1347,7 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AND() { return GetToken(MyPLParser.AND, 0); }
 		public LogicalAndExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1312,6 +1360,8 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INCREMENT() { return GetToken(MyPLParser.INCREMENT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DECREMENT() { return GetToken(MyPLParser.DECREMENT, 0); }
 		public PrefixExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1324,6 +1374,8 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INCREMENT() { return GetToken(MyPLParser.INCREMENT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DECREMENT() { return GetToken(MyPLParser.DECREMENT, 0); }
 		public PostfixExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1339,6 +1391,7 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OR() { return GetToken(MyPLParser.OR, 0); }
 		public LogicalOrExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1349,6 +1402,8 @@ public partial class MyPLParser : Parser {
 	}
 	public partial class FunctionCallExprContext : ExpressionContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(MyPLParser.ID, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(MyPLParser.LPAREN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(MyPLParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ArgumentListContext argumentList() {
 			return GetRuleContext<ArgumentListContext>(0);
 		}
@@ -1367,6 +1422,8 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQ() { return GetToken(MyPLParser.EQ, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NE() { return GetToken(MyPLParser.NE, 0); }
 		public EqualityExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1398,9 +1455,11 @@ public partial class MyPLParser : Parser {
 		}
 	}
 	public partial class ParenExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(MyPLParser.LPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(MyPLParser.RPAREN, 0); }
 		public ParenExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1416,6 +1475,8 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(MyPLParser.PLUS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(MyPLParser.MINUS, 0); }
 		public AddSubExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -1472,11 +1533,11 @@ public partial class MyPLParser : Parser {
 				State = 192;
 				Match(ID);
 				State = 193;
-				Match(T__3);
+				Match(LPAREN);
 				State = 195;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16492674670608L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16518470172672L) != 0)) {
 					{
 					State = 194;
 					argumentList();
@@ -1484,7 +1545,7 @@ public partial class MyPLParser : Parser {
 				}
 
 				State = 197;
-				Match(T__4);
+				Match(RPAREN);
 				}
 				break;
 			case 4:
@@ -1493,11 +1554,11 @@ public partial class MyPLParser : Parser {
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 198;
-				Match(T__3);
+				Match(LPAREN);
 				State = 199;
 				expression(0);
 				State = 200;
-				Match(T__4);
+				Match(RPAREN);
 				}
 				break;
 			case 5:
@@ -1507,7 +1568,7 @@ public partial class MyPLParser : Parser {
 				_prevctx = _localctx;
 				State = 202;
 				_la = TokenStream.LA(1);
-				if ( !(_la==T__12 || _la==T__13) ) {
+				if ( !(_la==INCREMENT || _la==DECREMENT) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -1525,7 +1586,7 @@ public partial class MyPLParser : Parser {
 				_prevctx = _localctx;
 				State = 204;
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 229376L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 8590721024L) != 0)) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -1558,7 +1619,7 @@ public partial class MyPLParser : Parser {
 						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
 						State = 209;
 						_la = TokenStream.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1835008L) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 7340032L) != 0)) ) {
 						ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -1577,7 +1638,7 @@ public partial class MyPLParser : Parser {
 						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
 						State = 212;
 						_la = TokenStream.LA(1);
-						if ( !(_la==T__15 || _la==T__16) ) {
+						if ( !(_la==PLUS || _la==MINUS) ) {
 						ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -1596,7 +1657,7 @@ public partial class MyPLParser : Parser {
 						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
 						State = 215;
 						_la = TokenStream.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 31457280L) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 503316480L) != 0)) ) {
 						ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -1615,7 +1676,7 @@ public partial class MyPLParser : Parser {
 						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
 						State = 218;
 						_la = TokenStream.LA(1);
-						if ( !(_la==T__24 || _la==T__25) ) {
+						if ( !(_la==EQ || _la==NE) ) {
 						ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -1633,7 +1694,7 @@ public partial class MyPLParser : Parser {
 						State = 220;
 						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
 						State = 221;
-						Match(T__26);
+						Match(AND);
 						State = 222;
 						expression(3);
 						}
@@ -1645,7 +1706,7 @@ public partial class MyPLParser : Parser {
 						State = 223;
 						if (!(Precpred(Context, 1))) throw new FailedPredicateException(this, "Precpred(Context, 1)");
 						State = 224;
-						Match(T__27);
+						Match(OR);
 						State = 225;
 						expression(2);
 						}
@@ -1658,7 +1719,7 @@ public partial class MyPLParser : Parser {
 						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
 						State = 227;
 						_la = TokenStream.LA(1);
-						if ( !(_la==T__12 || _la==T__13) ) {
+						if ( !(_la==INCREMENT || _la==DECREMENT) ) {
 						ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -1694,6 +1755,10 @@ public partial class MyPLParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] COMMA() { return GetTokens(MyPLParser.COMMA); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COMMA(int i) {
+			return GetToken(MyPLParser.COMMA, i);
+		}
 		public ArgumentListContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1720,11 +1785,11 @@ public partial class MyPLParser : Parser {
 			State = 238;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__2) {
+			while (_la==COMMA) {
 				{
 				{
 				State = 234;
-				Match(T__2);
+				Match(COMMA);
 				State = 235;
 				expression(0);
 				}
@@ -1821,7 +1886,7 @@ public partial class MyPLParser : Parser {
 			{
 			State = 243;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 16106127360L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 60L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -1879,68 +1944,69 @@ public partial class MyPLParser : Parser {
 		1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,
 		5,17,229,8,17,10,17,12,17,232,9,17,1,18,1,18,1,18,5,18,237,8,18,10,18,
 		12,18,240,9,18,1,19,1,19,1,20,1,20,1,20,0,1,34,21,0,2,4,6,8,10,12,14,16,
-		18,20,22,24,26,28,30,32,34,36,38,40,0,9,2,0,1,1,8,12,1,0,13,14,1,0,15,
-		17,1,0,18,20,1,0,16,17,1,0,21,24,1,0,25,26,1,0,40,42,1,0,30,33,265,0,46,
-		1,0,0,0,2,51,1,0,0,0,4,82,1,0,0,0,6,101,1,0,0,0,8,103,1,0,0,0,10,111,1,
-		0,0,0,12,114,1,0,0,0,14,131,1,0,0,0,16,133,1,0,0,0,18,138,1,0,0,0,20,140,
-		1,0,0,0,22,149,1,0,0,0,24,168,1,0,0,0,26,172,1,0,0,0,28,174,1,0,0,0,30,
-		180,1,0,0,0,32,186,1,0,0,0,34,206,1,0,0,0,36,233,1,0,0,0,38,241,1,0,0,
-		0,40,243,1,0,0,0,42,45,3,2,1,0,43,45,3,6,3,0,44,42,1,0,0,0,44,43,1,0,0,
-		0,45,48,1,0,0,0,46,44,1,0,0,0,46,47,1,0,0,0,47,49,1,0,0,0,48,46,1,0,0,
-		0,49,50,5,0,0,1,50,1,1,0,0,0,51,52,3,4,2,0,52,3,1,0,0,0,53,55,5,29,0,0,
-		54,53,1,0,0,0,54,55,1,0,0,0,55,56,1,0,0,0,56,57,3,40,20,0,57,60,5,43,0,
-		0,58,59,5,1,0,0,59,61,3,34,17,0,60,58,1,0,0,0,60,61,1,0,0,0,61,62,1,0,
-		0,0,62,63,5,2,0,0,63,83,1,0,0,0,64,66,5,29,0,0,65,64,1,0,0,0,65,66,1,0,
-		0,0,66,67,1,0,0,0,67,68,3,40,20,0,68,69,5,43,0,0,69,70,5,1,0,0,70,77,3,
-		34,17,0,71,72,5,3,0,0,72,73,5,43,0,0,73,74,5,1,0,0,74,76,3,34,17,0,75,
-		71,1,0,0,0,76,79,1,0,0,0,77,75,1,0,0,0,77,78,1,0,0,0,78,80,1,0,0,0,79,
-		77,1,0,0,0,80,81,5,2,0,0,81,83,1,0,0,0,82,54,1,0,0,0,82,65,1,0,0,0,83,
-		5,1,0,0,0,84,85,3,40,20,0,85,86,5,43,0,0,86,88,5,4,0,0,87,89,3,8,4,0,88,
-		87,1,0,0,0,88,89,1,0,0,0,89,90,1,0,0,0,90,91,5,5,0,0,91,92,3,12,6,0,92,
-		102,1,0,0,0,93,94,5,34,0,0,94,95,5,43,0,0,95,97,5,4,0,0,96,98,3,8,4,0,
-		97,96,1,0,0,0,97,98,1,0,0,0,98,99,1,0,0,0,99,100,5,5,0,0,100,102,3,12,
-		6,0,101,84,1,0,0,0,101,93,1,0,0,0,102,7,1,0,0,0,103,108,3,10,5,0,104,105,
-		5,3,0,0,105,107,3,10,5,0,106,104,1,0,0,0,107,110,1,0,0,0,108,106,1,0,0,
-		0,108,109,1,0,0,0,109,9,1,0,0,0,110,108,1,0,0,0,111,112,3,40,20,0,112,
-		113,5,43,0,0,113,11,1,0,0,0,114,118,5,6,0,0,115,117,3,14,7,0,116,115,1,
-		0,0,0,117,120,1,0,0,0,118,116,1,0,0,0,118,119,1,0,0,0,119,121,1,0,0,0,
-		120,118,1,0,0,0,121,122,5,7,0,0,122,13,1,0,0,0,123,132,3,4,2,0,124,132,
-		3,16,8,0,125,132,3,20,10,0,126,132,3,22,11,0,127,132,3,28,14,0,128,132,
-		3,30,15,0,129,132,3,32,16,0,130,132,3,12,6,0,131,123,1,0,0,0,131,124,1,
-		0,0,0,131,125,1,0,0,0,131,126,1,0,0,0,131,127,1,0,0,0,131,128,1,0,0,0,
-		131,129,1,0,0,0,131,130,1,0,0,0,132,15,1,0,0,0,133,134,5,43,0,0,134,135,
-		3,18,9,0,135,136,3,34,17,0,136,137,5,2,0,0,137,17,1,0,0,0,138,139,7,0,
-		0,0,139,19,1,0,0,0,140,141,5,35,0,0,141,142,5,4,0,0,142,143,3,34,17,0,
-		143,144,5,5,0,0,144,147,3,14,7,0,145,146,5,36,0,0,146,148,3,14,7,0,147,
-		145,1,0,0,0,147,148,1,0,0,0,148,21,1,0,0,0,149,150,5,37,0,0,150,152,5,
-		4,0,0,151,153,3,24,12,0,152,151,1,0,0,0,152,153,1,0,0,0,153,154,1,0,0,
-		0,154,156,5,2,0,0,155,157,3,34,17,0,156,155,1,0,0,0,156,157,1,0,0,0,157,
-		158,1,0,0,0,158,160,5,2,0,0,159,161,3,26,13,0,160,159,1,0,0,0,160,161,
-		1,0,0,0,161,162,1,0,0,0,162,163,5,5,0,0,163,164,3,14,7,0,164,23,1,0,0,
-		0,165,169,3,4,2,0,166,169,3,16,8,0,167,169,3,34,17,0,168,165,1,0,0,0,168,
-		166,1,0,0,0,168,167,1,0,0,0,169,25,1,0,0,0,170,173,3,16,8,0,171,173,3,
-		34,17,0,172,170,1,0,0,0,172,171,1,0,0,0,173,27,1,0,0,0,174,175,5,38,0,
-		0,175,176,5,4,0,0,176,177,3,34,17,0,177,178,5,5,0,0,178,179,3,14,7,0,179,
-		29,1,0,0,0,180,182,5,39,0,0,181,183,3,34,17,0,182,181,1,0,0,0,182,183,
-		1,0,0,0,183,184,1,0,0,0,184,185,5,2,0,0,185,31,1,0,0,0,186,187,3,34,17,
-		0,187,188,5,2,0,0,188,33,1,0,0,0,189,190,6,17,-1,0,190,207,3,38,19,0,191,
-		207,5,43,0,0,192,193,5,43,0,0,193,195,5,4,0,0,194,196,3,36,18,0,195,194,
-		1,0,0,0,195,196,1,0,0,0,196,197,1,0,0,0,197,207,5,5,0,0,198,199,5,4,0,
-		0,199,200,3,34,17,0,200,201,5,5,0,0,201,207,1,0,0,0,202,203,7,1,0,0,203,
-		207,3,34,17,9,204,205,7,2,0,0,205,207,3,34,17,7,206,189,1,0,0,0,206,191,
-		1,0,0,0,206,192,1,0,0,0,206,198,1,0,0,0,206,202,1,0,0,0,206,204,1,0,0,
-		0,207,230,1,0,0,0,208,209,10,6,0,0,209,210,7,3,0,0,210,229,3,34,17,7,211,
-		212,10,5,0,0,212,213,7,4,0,0,213,229,3,34,17,6,214,215,10,4,0,0,215,216,
-		7,5,0,0,216,229,3,34,17,5,217,218,10,3,0,0,218,219,7,6,0,0,219,229,3,34,
-		17,4,220,221,10,2,0,0,221,222,5,27,0,0,222,229,3,34,17,3,223,224,10,1,
-		0,0,224,225,5,28,0,0,225,229,3,34,17,2,226,227,10,8,0,0,227,229,7,1,0,
-		0,228,208,1,0,0,0,228,211,1,0,0,0,228,214,1,0,0,0,228,217,1,0,0,0,228,
-		220,1,0,0,0,228,223,1,0,0,0,228,226,1,0,0,0,229,232,1,0,0,0,230,228,1,
-		0,0,0,230,231,1,0,0,0,231,35,1,0,0,0,232,230,1,0,0,0,233,238,3,34,17,0,
-		234,235,5,3,0,0,235,237,3,34,17,0,236,234,1,0,0,0,237,240,1,0,0,0,238,
-		236,1,0,0,0,238,239,1,0,0,0,239,37,1,0,0,0,240,238,1,0,0,0,241,242,7,7,
-		0,0,242,39,1,0,0,0,243,244,7,8,0,0,244,41,1,0,0,0,25,44,46,54,60,65,77,
-		82,88,97,101,108,118,131,147,152,156,160,168,172,182,195,206,228,230,238
+		18,20,22,24,26,28,30,32,34,36,38,40,0,9,1,0,12,17,1,0,23,24,2,0,18,19,
+		33,33,1,0,20,22,1,0,18,19,1,0,25,28,1,0,29,30,1,0,40,42,1,0,2,5,265,0,
+		46,1,0,0,0,2,51,1,0,0,0,4,82,1,0,0,0,6,101,1,0,0,0,8,103,1,0,0,0,10,111,
+		1,0,0,0,12,114,1,0,0,0,14,131,1,0,0,0,16,133,1,0,0,0,18,138,1,0,0,0,20,
+		140,1,0,0,0,22,149,1,0,0,0,24,168,1,0,0,0,26,172,1,0,0,0,28,174,1,0,0,
+		0,30,180,1,0,0,0,32,186,1,0,0,0,34,206,1,0,0,0,36,233,1,0,0,0,38,241,1,
+		0,0,0,40,243,1,0,0,0,42,45,3,2,1,0,43,45,3,6,3,0,44,42,1,0,0,0,44,43,1,
+		0,0,0,45,48,1,0,0,0,46,44,1,0,0,0,46,47,1,0,0,0,47,49,1,0,0,0,48,46,1,
+		0,0,0,49,50,5,0,0,1,50,1,1,0,0,0,51,52,3,4,2,0,52,3,1,0,0,0,53,55,5,1,
+		0,0,54,53,1,0,0,0,54,55,1,0,0,0,55,56,1,0,0,0,56,57,3,40,20,0,57,60,5,
+		43,0,0,58,59,5,12,0,0,59,61,3,34,17,0,60,58,1,0,0,0,60,61,1,0,0,0,61,62,
+		1,0,0,0,62,63,5,38,0,0,63,83,1,0,0,0,64,66,5,1,0,0,65,64,1,0,0,0,65,66,
+		1,0,0,0,66,67,1,0,0,0,67,68,3,40,20,0,68,69,5,43,0,0,69,70,5,12,0,0,70,
+		77,3,34,17,0,71,72,5,39,0,0,72,73,5,43,0,0,73,74,5,12,0,0,74,76,3,34,17,
+		0,75,71,1,0,0,0,76,79,1,0,0,0,77,75,1,0,0,0,77,78,1,0,0,0,78,80,1,0,0,
+		0,79,77,1,0,0,0,80,81,5,38,0,0,81,83,1,0,0,0,82,54,1,0,0,0,82,65,1,0,0,
+		0,83,5,1,0,0,0,84,85,3,40,20,0,85,86,5,43,0,0,86,88,5,34,0,0,87,89,3,8,
+		4,0,88,87,1,0,0,0,88,89,1,0,0,0,89,90,1,0,0,0,90,91,5,35,0,0,91,92,3,12,
+		6,0,92,102,1,0,0,0,93,94,5,6,0,0,94,95,5,43,0,0,95,97,5,34,0,0,96,98,3,
+		8,4,0,97,96,1,0,0,0,97,98,1,0,0,0,98,99,1,0,0,0,99,100,5,35,0,0,100,102,
+		3,12,6,0,101,84,1,0,0,0,101,93,1,0,0,0,102,7,1,0,0,0,103,108,3,10,5,0,
+		104,105,5,39,0,0,105,107,3,10,5,0,106,104,1,0,0,0,107,110,1,0,0,0,108,
+		106,1,0,0,0,108,109,1,0,0,0,109,9,1,0,0,0,110,108,1,0,0,0,111,112,3,40,
+		20,0,112,113,5,43,0,0,113,11,1,0,0,0,114,118,5,36,0,0,115,117,3,14,7,0,
+		116,115,1,0,0,0,117,120,1,0,0,0,118,116,1,0,0,0,118,119,1,0,0,0,119,121,
+		1,0,0,0,120,118,1,0,0,0,121,122,5,37,0,0,122,13,1,0,0,0,123,132,3,4,2,
+		0,124,132,3,16,8,0,125,132,3,20,10,0,126,132,3,22,11,0,127,132,3,28,14,
+		0,128,132,3,30,15,0,129,132,3,32,16,0,130,132,3,12,6,0,131,123,1,0,0,0,
+		131,124,1,0,0,0,131,125,1,0,0,0,131,126,1,0,0,0,131,127,1,0,0,0,131,128,
+		1,0,0,0,131,129,1,0,0,0,131,130,1,0,0,0,132,15,1,0,0,0,133,134,5,43,0,
+		0,134,135,3,18,9,0,135,136,3,34,17,0,136,137,5,38,0,0,137,17,1,0,0,0,138,
+		139,7,0,0,0,139,19,1,0,0,0,140,141,5,7,0,0,141,142,5,34,0,0,142,143,3,
+		34,17,0,143,144,5,35,0,0,144,147,3,14,7,0,145,146,5,8,0,0,146,148,3,14,
+		7,0,147,145,1,0,0,0,147,148,1,0,0,0,148,21,1,0,0,0,149,150,5,9,0,0,150,
+		152,5,34,0,0,151,153,3,24,12,0,152,151,1,0,0,0,152,153,1,0,0,0,153,154,
+		1,0,0,0,154,156,5,38,0,0,155,157,3,34,17,0,156,155,1,0,0,0,156,157,1,0,
+		0,0,157,158,1,0,0,0,158,160,5,38,0,0,159,161,3,26,13,0,160,159,1,0,0,0,
+		160,161,1,0,0,0,161,162,1,0,0,0,162,163,5,35,0,0,163,164,3,14,7,0,164,
+		23,1,0,0,0,165,169,3,4,2,0,166,169,3,16,8,0,167,169,3,34,17,0,168,165,
+		1,0,0,0,168,166,1,0,0,0,168,167,1,0,0,0,169,25,1,0,0,0,170,173,3,16,8,
+		0,171,173,3,34,17,0,172,170,1,0,0,0,172,171,1,0,0,0,173,27,1,0,0,0,174,
+		175,5,10,0,0,175,176,5,34,0,0,176,177,3,34,17,0,177,178,5,35,0,0,178,179,
+		3,14,7,0,179,29,1,0,0,0,180,182,5,11,0,0,181,183,3,34,17,0,182,181,1,0,
+		0,0,182,183,1,0,0,0,183,184,1,0,0,0,184,185,5,38,0,0,185,31,1,0,0,0,186,
+		187,3,34,17,0,187,188,5,38,0,0,188,33,1,0,0,0,189,190,6,17,-1,0,190,207,
+		3,38,19,0,191,207,5,43,0,0,192,193,5,43,0,0,193,195,5,34,0,0,194,196,3,
+		36,18,0,195,194,1,0,0,0,195,196,1,0,0,0,196,197,1,0,0,0,197,207,5,35,0,
+		0,198,199,5,34,0,0,199,200,3,34,17,0,200,201,5,35,0,0,201,207,1,0,0,0,
+		202,203,7,1,0,0,203,207,3,34,17,9,204,205,7,2,0,0,205,207,3,34,17,7,206,
+		189,1,0,0,0,206,191,1,0,0,0,206,192,1,0,0,0,206,198,1,0,0,0,206,202,1,
+		0,0,0,206,204,1,0,0,0,207,230,1,0,0,0,208,209,10,6,0,0,209,210,7,3,0,0,
+		210,229,3,34,17,7,211,212,10,5,0,0,212,213,7,4,0,0,213,229,3,34,17,6,214,
+		215,10,4,0,0,215,216,7,5,0,0,216,229,3,34,17,5,217,218,10,3,0,0,218,219,
+		7,6,0,0,219,229,3,34,17,4,220,221,10,2,0,0,221,222,5,31,0,0,222,229,3,
+		34,17,3,223,224,10,1,0,0,224,225,5,32,0,0,225,229,3,34,17,2,226,227,10,
+		8,0,0,227,229,7,1,0,0,228,208,1,0,0,0,228,211,1,0,0,0,228,214,1,0,0,0,
+		228,217,1,0,0,0,228,220,1,0,0,0,228,223,1,0,0,0,228,226,1,0,0,0,229,232,
+		1,0,0,0,230,228,1,0,0,0,230,231,1,0,0,0,231,35,1,0,0,0,232,230,1,0,0,0,
+		233,238,3,34,17,0,234,235,5,39,0,0,235,237,3,34,17,0,236,234,1,0,0,0,237,
+		240,1,0,0,0,238,236,1,0,0,0,238,239,1,0,0,0,239,37,1,0,0,0,240,238,1,0,
+		0,0,241,242,7,7,0,0,242,39,1,0,0,0,243,244,7,8,0,0,244,41,1,0,0,0,25,44,
+		46,54,60,65,77,82,88,97,101,108,118,131,147,152,156,160,168,172,182,195,
+		206,228,230,238
 	};
 
 	public static readonly ATN _ATN =
