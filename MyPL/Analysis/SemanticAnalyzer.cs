@@ -23,7 +23,12 @@ namespace MyPL.Analysis
         private readonly Dictionary<string, VariableInfo> _symbolTable = new();
 
         // --- Error Helper ---
-        private void ReportError(int line, string message) => Errors.Add($"Line {line}: {message}");
+        private void ReportError(int line, string message)
+        {
+            string errorMsg = $"Line {line}: {message}";
+            Errors.Add(errorMsg);
+            Console.WriteLine(errorMsg); // Output to console as well
+        }
 
         // --- Symbol Resolution ---
         private VariableInfo ResolveVariable(string name)
@@ -65,7 +70,7 @@ namespace MyPL.Analysis
             }
 
             // Simplification: Arithmetic operations generally result in int (or promoted type in a real compiler)
-            return "int"; 
+            return "int";
         }
 
         private bool HasReturnPath(MyPLParser.BlockContext block)
@@ -112,7 +117,7 @@ namespace MyPL.Analysis
             {
                 // Add null check for individual ID tokens
                 if (ids[i] == null) continue;
-                
+
                 string name = ids[i].GetText();
                 int line = ids[i].Symbol.Line;
                 string initVal = "null";
@@ -136,9 +141,9 @@ namespace MyPL.Analysis
                 // Check Redeclaration
                 if (_currentScopeName == null) // Global
                 {
-                    if (GlobalVariables.Any(v => v.Name == name)) 
+                    if (GlobalVariables.Any(v => v.Name == name))
                         ReportError(line, $"Global variable '{name}' redeclared.");
-                    else 
+                    else
                     {
                         GlobalVariables.Add(variable);
                         _symbolTable[name] = variable;
@@ -148,7 +153,7 @@ namespace MyPL.Analysis
                 {
                     if (_currentFunction.Locals.Any(v => v.Name == name) || _currentFunction.Parameters.Any(p => p.Name == name))
                         ReportError(line, $"Local variable '{name}' redeclared in function '{_currentScopeName}'.");
-                    else 
+                    else
                     {
                         _currentFunction.Locals.Add(variable);
                         _symbolTable[name] = variable;
@@ -185,11 +190,11 @@ namespace MyPL.Analysis
             // --- Enter Scope ---
             _currentScopeName = name;
             _currentFunction = func;
-            
+
             // Snapshot global scope to restore later
             var scopeSnapshot = new Dictionary<string, VariableInfo>(_symbolTable);
             _symbolTable.Clear();
-            foreach(var g in GlobalVariables) _symbolTable[g.Name] = g;
+            foreach (var g in GlobalVariables) _symbolTable[g.Name] = g;
 
             // Process Parameters
             if (context.parameterList() != null)
@@ -198,7 +203,7 @@ namespace MyPL.Analysis
                 {
                     string pName = pCtx.ID().GetText();
                     var pSym = new VariableInfo(pName, pCtx.type().GetText(), "arg", false, pCtx.Start.Line, name);
-                    
+
                     if (func.Parameters.Any(p => p.Name == pName))
                         ReportError(pCtx.Start.Line, $"Parameter '{pName}' duplicated in function '{name}'.");
                     else
@@ -221,7 +226,7 @@ namespace MyPL.Analysis
             _currentScopeName = null;
             _currentFunction = null;
             _symbolTable.Clear();
-            foreach(var kvp in scopeSnapshot) _symbolTable[kvp.Key] = kvp.Value;
+            foreach (var kvp in scopeSnapshot) _symbolTable[kvp.Key] = kvp.Value;
 
             return null;
         }
@@ -229,7 +234,7 @@ namespace MyPL.Analysis
         public override object VisitFunctionCallExpr([NotNull] MyPLParser.FunctionCallExprContext context)
         {
             string name = context.ID().GetText();
-            
+
             // Recursivity Checks
             if (name == "main") ReportError(context.Start.Line, "Error: Cannot call 'main' function.");
             if (name == _currentScopeName) _currentFunction.IsRecursive = true;
@@ -274,7 +279,7 @@ namespace MyPL.Analysis
             else
             {
                 if (sym.IsConst) ReportError(context.Start.Line, $"Error: Cannot assign to constant '{name}'.");
-                
+
                 // Type check assignment
                 /* (Simplified logic, assumes expression visit handles errors) */
             }
@@ -282,13 +287,16 @@ namespace MyPL.Analysis
         }
 
         // Control Structures Tracking
-        public override object VisitIfStatement([NotNull] MyPLParser.IfStatementContext context) {
+        public override object VisitIfStatement([NotNull] MyPLParser.IfStatementContext context)
+        {
             _currentFunction?.ControlStructures.Add($"if (Line {context.Start.Line})"); return base.VisitIfStatement(context);
         }
-        public override object VisitWhileStatement([NotNull] MyPLParser.WhileStatementContext context) {
+        public override object VisitWhileStatement([NotNull] MyPLParser.WhileStatementContext context)
+        {
             _currentFunction?.ControlStructures.Add($"while (Line {context.Start.Line})"); return base.VisitWhileStatement(context);
         }
-        public override object VisitForStatement([NotNull] MyPLParser.ForStatementContext context) {
+        public override object VisitForStatement([NotNull] MyPLParser.ForStatementContext context)
+        {
             _currentFunction?.ControlStructures.Add($"for (Line {context.Start.Line})"); return base.VisitForStatement(context);
         }
     }
