@@ -22,7 +22,7 @@ namespace MyPL.Core
             {
                 if (t.Type == -1) continue;
                 string name = lexer.Vocabulary.GetSymbolicName(t.Type);
-                tokenStrings.Add($"<{name}, {t.Text.Replace("\n","\\n")}, {t.Line}>");
+                tokenStrings.Add($"<{name}, {t.Text.Replace("\n", "\\n")}, {t.Line}>");
             }
 
             // 2. Parsing

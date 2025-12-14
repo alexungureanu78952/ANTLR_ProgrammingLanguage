@@ -95,6 +95,13 @@ namespace MyPL.Analysis
 
         public override object VisitVariableDeclaration([NotNull] MyPLParser.VariableDeclarationContext context)
         {
+            // Add null checks to handle malformed parse trees from syntax errors
+            if (context.type() == null || context.ID() == null || context.ID().Length == 0)
+            {
+                // Skip processing if parse tree is incomplete due to syntax errors
+                return null;
+            }
+
             string type = context.type().GetText();
             bool isConst = context.CONST() != null;
             var ids = context.ID();
@@ -103,6 +110,9 @@ namespace MyPL.Analysis
 
             for (int i = 0; i < ids.Length; i++)
             {
+                // Add null check for individual ID tokens
+                if (ids[i] == null) continue;
+                
                 string name = ids[i].GetText();
                 int line = ids[i].Symbol.Line;
                 string initVal = "null";
@@ -112,10 +122,13 @@ namespace MyPL.Analysis
                 // Handle 'int x=1, y=2' vs 'int x=1'
                 if ((context.COMMA().Length > 0 && exprIndex < exprs.Length) || (exprs.Length > 0 && i == 0))
                 {
-                    var expr = exprs[exprIndex++];
-                    initType = InferExpressionType(expr);
-                    initVal = expr.GetText();
-                    hasInit = true;
+                    if (exprIndex < exprs.Length && exprs[exprIndex] != null)
+                    {
+                        var expr = exprs[exprIndex++];
+                        initType = InferExpressionType(expr);
+                        initVal = expr.GetText();
+                        hasInit = true;
+                    }
                 }
 
                 var variable = new VariableInfo(name, type, initVal, isConst, line, _currentScopeName ?? "global");
