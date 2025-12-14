@@ -31,6 +31,13 @@ namespace MyPL.Analysis
             Console.WriteLine(errorMsg); // Output to console as well
         }
 
+        // --- Function Signature Helper ---
+        private string GetFunctionSignature(string name, List<VariableInfo> parameters)
+        {
+            var paramTypes = string.Join(",", parameters.Select(p => p.Type));
+            return $"{name}({paramTypes})";
+        }
+
         // --- Symbol Resolution ---
         private VariableInfo ResolveVariable(string name)
         {
@@ -67,7 +74,8 @@ namespace MyPL.Analysis
             else if (context is MyPLParser.FunctionCallExprContext funcExpr)
             {
                 string funcName = funcExpr.ID().GetText();
-                return Functions.TryGetValue(funcName, out var f) ? f.ReturnType : "unknown";
+                var func = Functions.Values.FirstOrDefault(f => f.Name == funcName);
+                return func?.ReturnType ?? "unknown";
             }
 
             // Simplification: Arithmetic operations generally result in int (or promoted type in a real compiler)
@@ -173,11 +181,6 @@ namespace MyPL.Analysis
         public override object VisitFunctionDeclaration([NotNull] MyPLParser.FunctionDeclarationContext context)
         {
             string name = context.ID().GetText();
-            if (Functions.ContainsKey(name))
-            {
-                ReportError(context.Start.Line, $"Function '{name}' is already defined.");
-                return null;
-            }
 
             var func = new FunctionInfo
             {
@@ -186,7 +189,6 @@ namespace MyPL.Analysis
                 Line = context.Start.Line,
                 IsMain = (name == "main")
             };
-            Functions[name] = func;
 
             // --- Enter Scope ---
             _currentScopeName = name;
@@ -215,6 +217,15 @@ namespace MyPL.Analysis
                 }
             }
 
+            // Check for duplicate function signature (same name AND same parameter types)
+            string signature = GetFunctionSignature(name, func.Parameters);
+            if (Functions.ContainsKey(signature))
+            {
+                ReportError(context.Start.Line, $"Function '{name}' with same parameter types is already defined.");
+                return null;
+            }
+            Functions[signature] = func;
+
             Visit(context.block()); // Visit body
 
             // Check Return Requirement
@@ -238,20 +249,32 @@ namespace MyPL.Analysis
 
             // Recursivity Checks
             if (name == "main") ReportError(context.Start.Line, "Error: Cannot call 'main' function.");
-            if (name == _currentScopeName) _currentFunction.IsRecursive = true;
+            if (name == _currentScopeName && _currentFunction != null) _currentFunction.IsRecursive = true;
 
-            // Definition Check
-            if (!Functions.TryGetValue(name, out var targetFunc))
+            // Get argument types to find matching overload
+            var argExprs = context.argumentList()?.expression();
+            int argCount = argExprs?.Length ?? 0;
+
+            // Find all functions with matching name
+            var matchingFuncs = Functions.Values.Where(f => f.Name == name).ToList();
+
+            if (matchingFuncs.Count == 0)
             {
                 ReportError(context.Start.Line, $"Error: Call to undefined function '{name}'.");
             }
             else
             {
-                // Argument Count Check
-                int argCount = context.argumentList()?.expression().Length ?? 0;
-                if (argCount != targetFunc.Parameters.Count)
+                // Try to find exact match by parameter count
+                var exactMatch = matchingFuncs.FirstOrDefault(f => f.Parameters.Count == argCount);
+
+                if (exactMatch == null)
                 {
-                    ReportError(context.Start.Line, $"Argument mismatch for '{name}'. Expected {targetFunc.Parameters.Count}, got {argCount}.");
+                    var availableCounts = string.Join(", ", matchingFuncs.Select(f => f.Parameters.Count).Distinct());
+                    ReportError(context.Start.Line, $"Error: No overload of '{name}' takes {argCount} arguments. Available: {availableCounts} parameters.");
+                }
+                else if (name == _currentScopeName && _currentFunction != null)
+                {
+                    _currentFunction.IsRecursive = true;
                 }
             }
 

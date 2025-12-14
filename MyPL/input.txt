@@ -1,4 +1,10 @@
+int add(int a, int b) {
+    return a + b;
+}
+
+int add(int a, int b, int c) {
+    return a + b + 1;
+}
+
 void main() {
-	int x;
-    x = 5 @ 3;
 }
