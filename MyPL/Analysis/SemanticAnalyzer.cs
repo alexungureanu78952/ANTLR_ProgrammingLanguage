@@ -329,6 +329,32 @@ namespace MyPL.Analysis
             return base.VisitAssignmentStatement(context);
         }
 
+        public override object VisitReturnStatement([NotNull] MyPLParser.ReturnStatementContext context)
+        {
+            if (_currentFunction != null)
+            {
+                string expectedType = _currentFunction.ReturnType;
+
+                if (context.expression() != null)
+                {
+                    string returnType = InferExpressionType(context.expression());
+
+                    if (returnType != "unknown" && !AreTypesCompatible(expectedType, returnType))
+                    {
+                        ReportError(context.Start.Line,
+                            $"Error: Return type mismatch in function '{_currentFunction.Name}'. Expected '{expectedType}', got '{returnType}'.");
+                    }
+                }
+                else if (expectedType != "void")
+                {
+                    ReportError(context.Start.Line,
+                        $"Error: Function '{_currentFunction.Name}' must return a value of type '{expectedType}'.");
+                }
+            }
+
+            return base.VisitReturnStatement(context);
+        }
+
         // Control Structures Tracking
         public override object VisitIfStatement([NotNull] MyPLParser.IfStatementContext context)
         {

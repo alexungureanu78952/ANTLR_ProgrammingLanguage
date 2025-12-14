@@ -1,7 +1,4 @@
-int calculate(int x) {
-    return x * 2;
-}
-
 void main() {
-    int result = calculate("text");
+    const int PI = 3;
+    PI = 4;
 }
