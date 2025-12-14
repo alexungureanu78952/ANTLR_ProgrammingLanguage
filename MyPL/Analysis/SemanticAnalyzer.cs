@@ -272,9 +272,28 @@ namespace MyPL.Analysis
                     var availableCounts = string.Join(", ", matchingFuncs.Select(f => f.Parameters.Count).Distinct());
                     ReportError(context.Start.Line, $"Error: No overload of '{name}' takes {argCount} arguments. Available: {availableCounts} parameters.");
                 }
-                else if (name == _currentScopeName && _currentFunction != null)
+                else
                 {
-                    _currentFunction.IsRecursive = true;
+                    // Check argument types compatibility
+                    if (argExprs != null)
+                    {
+                        for (int i = 0; i < argCount; i++)
+                        {
+                            string argType = InferExpressionType(argExprs[i]);
+                            string paramType = exactMatch.Parameters[i].Type;
+
+                            if (argType != "unknown" && !AreTypesCompatible(paramType, argType))
+                            {
+                                ReportError(context.Start.Line,
+                                    $"Error: Argument {i + 1} type mismatch in call to '{name}'. Expected '{paramType}', got '{argType}'.");
+                            }
+                        }
+                    }
+
+                    if (name == _currentScopeName && _currentFunction != null)
+                    {
+                        _currentFunction.IsRecursive = true;
+                    }
                 }
             }
 
