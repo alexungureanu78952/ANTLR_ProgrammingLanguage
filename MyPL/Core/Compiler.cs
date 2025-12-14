@@ -7,12 +7,32 @@ using System;
 
 namespace MyPL.Core
 {
-    // Custom Error Listener to capture lexical and syntax errors
-    public class CompilerErrorListener : BaseErrorListener
+    // Custom Error Listener for Lexer (uses int for offending symbol)
+    public class LexerErrorListener : IAntlrErrorListener<int>
     {
         public List<string> Errors { get; } = new();
 
-        public override void SyntaxError(
+        public void SyntaxError(
+            System.IO.TextWriter output,
+            IRecognizer recognizer,
+            int offendingSymbol,
+            int line,
+            int charPositionInLine,
+            string msg,
+            RecognitionException e)
+        {
+            string errorMsg = $"Line {line}: Lexical Error: {msg}";
+            Errors.Add(errorMsg);
+            Console.WriteLine(errorMsg); // Output to console as well
+        }
+    }
+
+    // Custom Error Listener for Parser (uses IToken for offending symbol)
+    public class ParserErrorListener : IAntlrErrorListener<IToken>
+    {
+        public List<string> Errors { get; } = new();
+
+        public void SyntaxError(
             System.IO.TextWriter output,
             IRecognizer recognizer,
             IToken offendingSymbol,
@@ -38,7 +58,7 @@ namespace MyPL.Core
             var lexer = new MyPLLexer(inputStream);
 
             // Add custom error listener to lexer
-            var lexerErrorListener = new CompilerErrorListener();
+            var lexerErrorListener = new LexerErrorListener();
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(lexerErrorListener);
 
@@ -61,7 +81,7 @@ namespace MyPL.Core
             var parser = new MyPLParser(tokenStream);
 
             // Add custom error listener to parser
-            var parserErrorListener = new CompilerErrorListener();
+            var parserErrorListener = new ParserErrorListener();
             parser.RemoveErrorListeners();
             parser.AddErrorListener(parserErrorListener);
 
