@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace MyPL.Domain
 {
-    // Modele Imutabile pentru thread-safety si predictibilitate
     public record VariableInfo(string Name, string Type, string InitValue, bool IsConst, int Line, string Scope);
 
     public class FunctionInfo

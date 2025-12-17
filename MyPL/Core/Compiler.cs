@@ -2,12 +2,11 @@ using System.Collections.Generic;
 using Antlr4.Runtime;
 using MyPL.Analysis;
 using MyPL.Domain;
-using MyPL; // Required for Lexer/Parser
+using MyPL;
 using System;
 
 namespace MyPL.Core
 {
-    // Custom Error Listener for Lexer (uses int for offending symbol)
     public class LexerErrorListener : IAntlrErrorListener<int>
     {
         public List<string> Errors { get; } = new();
@@ -23,11 +22,10 @@ namespace MyPL.Core
         {
             string errorMsg = $"Line {line}: Lexical Error: {msg}";
             Errors.Add(errorMsg);
-            Console.WriteLine(errorMsg); // Output to console as well
+            Console.WriteLine(errorMsg);
         }
     }
 
-    // Custom Error Listener for Parser (uses IToken for offending symbol)
     public class ParserErrorListener : IAntlrErrorListener<IToken>
     {
         public List<string> Errors { get; } = new();
@@ -43,7 +41,7 @@ namespace MyPL.Core
         {
             string errorMsg = $"Line {line}: Syntax Error: {msg}";
             Errors.Add(errorMsg);
-            Console.WriteLine(errorMsg); // Output to console as well
+            Console.WriteLine(errorMsg);
         }
     }
 
@@ -53,19 +51,16 @@ namespace MyPL.Core
         {
             var allErrors = new List<string>();
 
-            // 1. Lexical Analysis
             var inputStream = CharStreams.fromString(sourceCode);
             var lexer = new MyPLLexer(inputStream);
 
-            // Add custom error listener to lexer
             var lexerErrorListener = new LexerErrorListener();
             lexer.RemoveErrorListeners();
             lexer.AddErrorListener(lexerErrorListener);
 
             var tokenStream = new CommonTokenStream(lexer);
-            tokenStream.Fill(); // Load all tokens
+            tokenStream.Fill();
 
-            // Extract Tokens for Report
             var tokenStrings = new List<string>();
             foreach (var t in tokenStream.GetTokens())
             {
@@ -74,30 +69,23 @@ namespace MyPL.Core
                 tokenStrings.Add($"<{name}, {t.Text.Replace("\n", "\\n")}, {t.Line}>");
             }
 
-            // Collect lexer errors
             allErrors.AddRange(lexerErrorListener.Errors);
 
-            // 2. Parsing
             var parser = new MyPLParser(tokenStream);
 
-            // Add custom error listener to parser
             var parserErrorListener = new ParserErrorListener();
             parser.RemoveErrorListeners();
             parser.AddErrorListener(parserErrorListener);
 
             var tree = parser.program();
 
-            // Collect parser errors
             allErrors.AddRange(parserErrorListener.Errors);
 
-            // 3. Semantic Analysis
             var analyzer = new SemanticAnalyzer();
             analyzer.Visit(tree);
 
-            // Collect semantic errors
             allErrors.AddRange(analyzer.Errors);
 
-            // 4. Return Result
             return new CompilationResult(
                 tokenStrings,
                 analyzer.GlobalVariables,

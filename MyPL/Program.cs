@@ -16,10 +16,8 @@ namespace MyPL
                 return;
             }
 
-            // Reliable Project Root Calculation
             string assemblyPath = Assembly.GetExecutingAssembly().Location;
             string binDir = Path.GetDirectoryName(assemblyPath);
-            // Up 3 levels from bin/Debug/net9.0
             string projectRoot = Path.GetFullPath(Path.Combine(binDir, "..", "..", ".."));
             
             string inputFile = args.Length > 0 ? args[0] : Path.Combine(projectRoot, "input.txt");
@@ -30,11 +28,9 @@ namespace MyPL
             Console.WriteLine($"[Main] Reading {inputFile}...");
             string sourceCode = File.ReadAllText(inputFile);
 
-            // Orchestration
             var compiler = new Compiler();
             var result = compiler.Compile(sourceCode);
 
-            // Reporting
             var reporter = new ReportGenerator(outputDir);
             reporter.GenerateAll(result);
 

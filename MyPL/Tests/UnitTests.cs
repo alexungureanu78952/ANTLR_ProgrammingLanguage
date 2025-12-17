@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MyPL.Core; // Changed from MyPL to MyPL.Core
+using MyPL.Core;
 using MyPL.Domain;
 
 namespace MyPL.Tests
@@ -13,22 +13,18 @@ namespace MyPL.Tests
             int passed = 0;
             int total = 0;
 
-            // Test 1: Basic Valid Program
             total++;
             if (Test_ValidProgram()) passed++;
             else Console.WriteLine("FAIL: Test_ValidProgram");
 
-            // Test 2: Redeclaration Error
             total++;
             if (Test_RedeclarationError()) passed++;
             else Console.WriteLine("FAIL: Test_RedeclarationError");
 
-            // Test 3: Type Mismatch
             total++;
             if (Test_TypeMismatch()) passed++;
             else Console.WriteLine("FAIL: Test_TypeMismatch");
 
-            // Test 4: Missing Main
             total++;
             if (Test_MissingMain()) passed++;
             else Console.WriteLine("FAIL: Test_MissingMain");
