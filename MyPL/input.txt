@@ -1,4 +1,14 @@
 void main() {
-    const int PI = 3;
-    PI = 4;
+    const int LIMIT = 5
+    string st = "@$";
+    int i = 0;
+    while (i < LIMIT) {
+        total = add(total, i);
+        i = i + 1;
+    }
+    double avg = average(total, LIMIT);
+    string status = statusText(avg);
+    @a;
 }
+/*salut
+*/
